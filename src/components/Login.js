@@ -17,7 +17,8 @@ const Login = ({ onLogin }) => {
 
             const userWithRole = {
                 ...user,
-                role: response.data.role || user.role
+                role: response.data.role || user.role,
+               
             };
             let token;
             if (typeof accessToken === 'string') {
@@ -34,7 +35,7 @@ const Login = ({ onLogin }) => {
             localStorage.setItem('user', JSON.stringify(userWithRole));
             onLogin(userWithRole);
             toast.success('Đăng nhập thành công!');
-            navigate('/profile');
+            navigate('/');
         } catch (error) {
             console.error('Login error:', error);
             toast.error(error.response?.data?.message || error.message || 'Đăng nhập thất bại');

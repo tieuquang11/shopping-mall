@@ -5,12 +5,11 @@ import { useCart } from './CartContext';
 import api from '../services/api';
 import './OrderConfirmation.css';
 
-const OrderConfirmation = () => {
+const OrderConfirmation = ({ currentUser }) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { clearCart } = useCart();
+    useCart();
     const [order, setOrder] = useState(null);
-    const [orderItems, setOrderItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -24,11 +23,8 @@ const OrderConfirmation = () => {
 
             try {
                 setLoading(true);
-                const orderResponse = await api.get(`/orders/${orderId}`);
-                setOrder(orderResponse.data);
-
-                const itemsResponse = await api.get(`/orderItems?orderId=${orderId}`);
-                setOrderItems(itemsResponse.data);
+                const response = await api.get(`/orders/${orderId}`);
+                setOrder(response.data);
             } catch (error) {
                 console.error('Failed to fetch order details:', error);
                 toast.error('Không thể tải thông tin đơn hàng. Vui lòng thử lại sau.');
@@ -41,37 +37,23 @@ const OrderConfirmation = () => {
         fetchOrderDetails();
     }, [location.state, navigate]);
 
-    const handleRemoveItem = async (itemId) => {
-        try {
-            await api.delete(`/orderItems/${itemId}`);
-            const updatedItems = orderItems.filter(item => item.id !== itemId);
-            setOrderItems(updatedItems);
-
-            // Recalculate total
-            const updatedTotal = calculateTotal(updatedItems);
-            setOrder(prevOrder => ({ ...prevOrder, totalAmount: updatedTotal }));
-
-            toast.success('Xóa sản phẩm thành công!');
-        } catch (error) {
-            console.error('Error removing item:', error);
-            toast.error('Xóa sản phẩm thất bại. Vui lòng thử lại sau.');
+    const handlePayment = async () => {
+        if (order.paymentMethod === 'bank') {
+            try {
+                const response = await api.post(`/orders/${order.id}/process-payment`, {
+                    paymentMethod: 'bank'
+                });
+                if (response.data.message === 'Thanh toán thành công') {
+                    toast.success('Thanh toán thành công!');
+                    setOrder({ ...order, status: 'paid' });
+                } else {
+                    toast.error('Thanh toán thất bại. Vui lòng thử lại.');
+                }
+            } catch (error) {
+                console.error('Payment error:', error);
+                toast.error('Có lỗi xảy ra khi xử lý thanh toán.');
+            }
         }
-    };
-
-    const handleDeleteOrder = async () => {
-        try {
-            await api.delete(`/orders/${order.id}`);
-            clearCart();
-            toast.success('Xóa đơn hàng thành công!');
-            navigate('/');
-        } catch (error) {
-            console.error('Error deleting order:', error);
-            toast.error('Xóa đơn hàng thất bại. Vui lòng thử lại sau.');
-        }
-    };
-
-    const calculateTotal = (items) => {
-        return items.reduce((total, item) => total + item.price * item.quantity, 0);
     };
 
     if (loading) {
@@ -81,24 +63,38 @@ const OrderConfirmation = () => {
     if (!order) {
         return <div>Không tìm thấy thông tin đơn hàng.</div>;
     }
-    const totalItems = orderItems.reduce((total, item) => total + item.quantity, 0);
+
+    const formatPrice = (price) => {
+        return parseFloat(price).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
 
     return (
         <div className="order-confirmation">
             <h2>Xác nhận đơn hàng</h2>
             <p>Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đã được xác nhận.</p>
             <p>Mã đơn hàng: ORD-{order.id.toString().padStart(6, '0')}</p>
+            <p>Tên khách hàng: {currentUser?.name || order.user?.name || 'Không có thông tin'}</p>
+            <p>Email: {currentUser?.email || order.user?.email || 'Không có thông tin'}</p>
+            <p>Số điện thoại: {currentUser?.phone || order.user?.phone || 'Không có thông tin'}</p>
+            <p>Địa chỉ: {currentUser?.address || order.shippingAddress || 'Không có thông tin'}</p>
+            <p>Trạng thái: {order.status}</p>
+            <p>Phương thức thanh toán: {order.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán qua ngân hàng'}</p>
+            <p>Địa chỉ nhận hàng: {order.shippingAddress}</p>
             <h3>Chi tiết đơn hàng:</h3>
-            {orderItems.length > 0 ? (
+            {order.orderItems.length > 0 ? (
                 <ul className="order-items">
-                    {orderItems.map((item) => (
+                    {order.orderItems.map((item) => (
                         <li key={item.id} className="order-item">
+                            <img
+                                src={item.image ? `http://localhost:3333/images/${item.image}` : 'placeholder.jpg'}
+                                alt={item.name}
+                                className="order-item-image"
+                            />
                             <div className="order-item-details">
                                 <div className="order-item-name">{item.name}</div>
                                 <div>Số lượng: {item.quantity}</div>
-                                <div>Giá: {item.price * item.quantity} VND</div>
+                                <div>Giá: {formatPrice(item.price * item.quantity)} VND</div>
                             </div>
-                            <button onClick={() => handleRemoveItem(item.id)}>Xóa</button>
                         </li>
                     ))}
                 </ul>
@@ -106,10 +102,11 @@ const OrderConfirmation = () => {
                 <p>Không có thông tin chi tiết về các mặt hàng.</p>
             )}
             <div className="order-summary">
-                <p>Tổng số sản phẩm: {totalItems}</p>
-                <p>Tổng cộng: {calculateTotal(orderItems)} VND</p>
+                <p className="price">Tổng cộng: {formatPrice(order.totalAmount)} VND</p>
             </div>
-            <button onClick={handleDeleteOrder} className="delete-order-btn">Xóa đơn hàng</button>
+            {order.paymentMethod === 'bank' && order.status !== 'paid' && (
+                <button onClick={handlePayment} className="payment-btn">Tiến hành thanh toán</button>
+            )}
         </div>
     );
 };

@@ -86,7 +86,7 @@ const ProductList = ({ currentUser }) => {
                         <h3>{product.name || 'Unnamed Product'}</h3>
                         <p>{product.description || 'No description available'}</p>
                         <p className="price">
-                            Price: {product.price ? `${formatPrice(product.price)} VND` : 'Price not available'}
+                             {product.price ? `${formatPrice(product.price)} VND` : 'Price not available'}
                         </p>
                         {product.stock <= 0 ? (
                             <p className="out-of-stock">Out of Stock</p>

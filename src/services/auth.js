@@ -1,7 +1,7 @@
 import api from './api';
 
-const register = (email, password, name) => {
-    return api.post('register', { email, password, name });
+const register = (email, password, name, address, phone) => {
+    return api.post('register', { email, password, name, address, phone });
 };
 
 const login = (email, password) => {

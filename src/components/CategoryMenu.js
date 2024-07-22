@@ -21,7 +21,7 @@ const CategoryMenu = () => {
 
     return (
         <div className="category-menu">
-            <h3>Categories</h3>
+            <h3>Danh Mục</h3>
             <ul>
                 {categories.map((category) => (
                     <li key={category.id}>

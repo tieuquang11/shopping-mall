@@ -91,7 +91,7 @@ const ProductList = ({ currentUser }) => {
                         <img src={`http://localhost:3333/images/${product.image}`} alt={product.name} />
                         <h3>{product.name}</h3>
                         <p>{product.description}</p>
-                        <p>Price: ${formatPrice(product.price)}VND</p>
+                        <p className="price">{formatPrice(product.price)}VND</p>
                         {product.stock <= 0 ? (
                             <p className="out-of-stock">Out of Stock</p>
                         ) : (

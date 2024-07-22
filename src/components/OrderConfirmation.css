@@ -1,25 +1,29 @@
-/* OrderConfirmation.css */
-
 .order-confirmation {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
     color: #333;
 }
 
 .order-confirmation h2 {
     text-align: center;
-    color: #ff6600;
     margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
 }
 
 .order-confirmation p {
-    text-align: center;
     margin: 10px 0;
+    font-size: 16px;
+}
+
+.order-confirmation h3 {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #555;
 }
 
 .order-items {
@@ -30,78 +34,68 @@
 
 .order-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 10px;
-    margin-bottom: 10px;
     border-bottom: 1px solid #ddd;
 }
 
+.order-item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
 .order-item-details {
-    flex-grow: 1;
+    flex: 1;
 }
 
 .order-item-name {
+    font-size: 18px;
     font-weight: bold;
     color: #333;
 }
 
-.order-item-details div {
-    margin-top: 5px;
-}
-
-.order-item button {
-    background-color: #ff6600;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.order-item button:hover {
-    background-color: #ff4500;
-}
-
 .order-summary {
+    font-size: 18px;
+    font-weight: bold;
     text-align: right;
     margin-top: 20px;
 }
 
-.order-summary p {
-    margin: 5px 0;
-}
-
-.delete-order-btn {
+.payment-btn {
     display: block;
     width: 100%;
-    background-color: #ff0000;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #28a745;
     color: #fff;
     border: none;
-    padding: 10px;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
     text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.delete-order-btn:hover {
-    background-color: #cc0000;
+.payment-btn:hover {
+    background-color: #218838;
 }
 
-@media (max-width: 600px) {
-    .order-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .order-item button {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .order-summary {
-        text-align: left;
-    }
+.loading {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
 }
+
+.error-message {
+    text-align: center;
+    font-size: 18px;
+    color: #e74c3c;
+}
+
+.price {
+    
+    color: #ee4d2d;
+  }

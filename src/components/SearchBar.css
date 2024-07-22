@@ -10,7 +10,7 @@
 }
 
 .search-bar input {
-    flex: 1; 
+    flex: 1 1; 
     padding: 8px; 
     margin-right: 240px; 
     border: none;

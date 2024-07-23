@@ -4,7 +4,7 @@ import api from '../services/api';
 import { toast } from 'react-toastify';
 import './ProductForm.css';
 
-const ProductForm = () => {
+const ProductForm = ({ userMode = false }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -24,7 +24,7 @@ const ProductForm = () => {
 
     const fetchProduct = async () => {
         try {
-            const response = await api.get(`/products/${id}`);
+            const response = await api.get(`/${userMode ? 'user/' : ''}products/${id}`);
             const product = response.data;
             setName(product.name);
             setDescription(product.description);
@@ -33,14 +33,12 @@ const ProductForm = () => {
             setCategoryId(product.category_id);
         } catch (error) {
             console.error('Failed to fetch product:', error);
-            
         }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        
         const errors = {};
         if (!name.trim()) errors.name = 'Name is required';
         if (!description.trim()) errors.description = 'Description is required';
@@ -62,13 +60,13 @@ const ProductForm = () => {
 
         try {
             if (id) {
-                await api.put(`/products/${id}`, formData);
+                await api.put(`/${userMode ? 'user/' : ''}products/${id}`, formData);
                 toast.success('Product updated successfully!');
             } else {
-                await api.post('/products', formData);
+                await api.post(`/${userMode ? 'user/' : ''}products`, formData);
                 toast.success('Product created successfully!');
             }
-            navigate('/');
+            navigate(userMode ? '/user/products' : '/');
         } catch (error) {
             console.error('Failed to save product:', error);
             toast.error('Failed to save product');

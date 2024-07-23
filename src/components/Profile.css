@@ -1,54 +1,69 @@
-.profile-page {
-  max-width: 600px;
-  margin: 0 auto;
+/* Profile.css */
+
+.profile {
+  max-width: 500px;
+  margin: 40px auto;
   padding: 20px;
-}
-
-.profile-page .avatar-container {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.profile-page .avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
+.profile h2 {
+  font-size: 28px;
+  color: #333333;
+  margin-bottom: 30px;
+  font-weight: 700;
 }
 
-.profile-page .user-info {
+.profile-info {
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+.profile-info p {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  font-size: 18px;
+  color: #555555;
+  margin: 12px 0;
 }
 
-.profile-page .user-info label {
-  margin-bottom: 10px;
+.profile-info p strong {
+  color: #111111;
+  font-weight: 600;
+  width: 100px; /* Đảm bảo tất cả các strong có cùng chiều rộng */
+  text-align: left;
 }
 
-.profile-page .user-info input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
+.profile-actions {
+  margin-top: 20px;
 }
 
-.profile-page button {
-  padding: 10px;
+.manage-products-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  color: #ffffff;
   background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.profile-page button:hover {
+.manage-products-btn:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
-.profile-page .delete-account {
-  background-color: #dc3545;
-}
-
-.profile-page .delete-account:hover {
-  background-color: #c82333;
+.manage-products-btn:active {
+  background-color: #004494;
+  transform: translateY(0);
 }

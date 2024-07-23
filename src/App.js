@@ -14,6 +14,7 @@ import Profile from './components/Profile';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminDashboard from './components/AdminDashboard';
+import UserProducts from './components/UserProducts';
 import './App.css';
 
 const App = () => {
@@ -62,6 +63,18 @@ const App = () => {
               element={currentUser && currentUser.role === 'admin' ? <ProductForm /> : <Navigate to="/" />}
             />
             <Route path="/order-confirmation/:id" element={<OrderConfirmation currentUser={currentUser} />} />
+            <Route
+              path="/user/products"
+              element={currentUser ? <UserProducts currentUser={currentUser} /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/user/product/new"
+              element={currentUser ? <ProductForm userMode={true} /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/user/product/edit/:id"
+              element={currentUser ? <ProductForm userMode={true} /> : <Navigate to="/login" />}
+            />
           </Routes>
         </Layout>
       </Router>

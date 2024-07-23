@@ -1,60 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import './Profile.css';
 
 const Profile = ({ currentUser }) => {
-    const [name, setName] = useState(currentUser?.name || '');
-    const [password, setPassword] = useState('');
-    const [avatar, setAvatar] = useState(currentUser?.avatar || 'https://via.placeholder.com/150');
-
-    const handleNameChange = (e) => setName(e.target.value);
-    const handlePasswordChange = (e) => setPassword(e.target.value);
-    const handleAvatarChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setAvatar(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Implement API call to update user information
-        console.log('Update user:', { name, password, avatar });
-    };
-
-    const handleDelete = () => {
-        // Implement API call to delete user account
-        console.log('Delete user account');
-    };
-
     if (!currentUser) {
-        return <div className="profile-page">Please log in to view your profile.</div>;
+        return <div>Please login to view your profile.</div>;
     }
 
     return (
-        <div className="profile-page">
-            <h2>Profile</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="avatar-container">
-                    <img className="avatar" src={avatar} alt={name} />
-                    <input type="file" onChange={handleAvatarChange} accept="image/*" />
-                </div>
-                <div className="user-info">
-                    <label>
-                        Name:
-                        <input type="text" value={name} onChange={handleNameChange} />
-                    </label>
-                    <label>
-                        New Password:
-                        <input type="password" value={password} onChange={handlePasswordChange} />
-                    </label>
-                    <button type="submit">Update Profile</button>
-                </div>
-            </form>
-            <button onClick={handleDelete} className="delete-account">Delete Account</button>
+        <div className="profile">
+            <h2>My Profile</h2>
+            <div className="profile-info">
+                <p><strong>Name:</strong> {currentUser.name}</p>
+                <p><strong>Email:</strong> {currentUser.email}</p>
+            </div>
+            <div className="profile-actions">
+                <Link to="/user/products" className="manage-products-btn">Manage My Products</Link>
+            </div>
         </div>
     );
 };

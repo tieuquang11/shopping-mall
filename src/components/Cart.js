@@ -88,7 +88,7 @@ const Cart = () => {
                             <strong className="price">Tổng cộng: {formatPrice(calculateTotalPrice())} VND</strong>
                     </div>
                     <div className="cart-actions">
-                        <button className="checkout-button" onClick={handleCheckout}>Mua Hàng</button>
+                        <button className="checkout-button" onClick={handleCheckout}>Đặt Hàng</button>
                     </div>
                 </>
             )}

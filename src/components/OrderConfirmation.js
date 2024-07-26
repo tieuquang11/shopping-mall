@@ -105,7 +105,7 @@ const OrderConfirmation = ({ currentUser }) => {
                 <p className="price">Tổng cộng: {formatPrice(order.totalAmount)} VND</p>
             </div>
             {order.paymentMethod === 'bank' && order.status !== 'paid' && (
-                <button onClick={handlePayment} className="payment-btn">Tiến hành thanh toán</button>
+                <button onClick={handlePayment} className="payment-btn">Thanh Toán</button>
             )}
         </div>
     );
